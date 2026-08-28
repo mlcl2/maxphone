@@ -1,0 +1,11 @@
+{
+  "uid": "61560883715830",
+  "destination": "wall",
+  "text_sha256": "08b40d781d6a8bc99e889819ea7fd4ac0c438982bd14e721c3b3a890b86ae939",
+  "verified": true,
+  "evidence": [
+    "home_surface",
+    "just_now",
+    "composer_closed"
+  ]
+}

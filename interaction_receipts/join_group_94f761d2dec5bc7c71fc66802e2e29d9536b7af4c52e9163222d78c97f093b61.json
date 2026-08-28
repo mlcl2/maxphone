@@ -1,0 +1,1 @@
+{"uid": "61560883715830", "action": "join_group", "target": "tong kho mua ban do gia dung", "evidence": ["fresh_xml:View,target", "screenshot:join_group_postcondition_failure.png"], "verified": true}

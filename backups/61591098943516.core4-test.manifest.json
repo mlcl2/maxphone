@@ -1,0 +1,14 @@
+{
+  "uid": "61591098943516",
+  "created_at": "2026-07-29T12:58:26.270514+00:00",
+  "archive_type": "core4-experiment",
+  "included_paths": [
+    "com.facebook.katana/shared_prefs",
+    "com.facebook.katana/databases",
+    "com.facebook.katana/app_light_prefs",
+    "com.facebook.katana/files/mobileconfig"
+  ],
+  "archive_size_bytes": 2331903,
+  "baseline_archive": "61591098943516.tar.gz",
+  "restore_verified": false
+}

@@ -1,0 +1,370 @@
+
+WINDOW MANAGER LAST ANR (dumpsys window lastanr)
+  <no ANR has occurred since boot>
+
+WINDOW MANAGER POLICY STATE (dumpsys window policy)
+    mSafeMode=false mSystemReady=true mSystemBooted=true
+    mLidState=LID_ABSENT mLidOpenRotation=-1
+    mCameraLensCoverState=CAMERA_LENS_COVER_ABSENT mHdmiPlugged=false
+    mLastSystemUiFlags=0x2008 mResettingSystemUiFlags=0x0 mForceClearedSystemUiFlags=0x0
+    mWakeGestureEnabledSetting=true
+    mSupportAutoRotation=true mOrientationSensorEnabled=true
+    mUiMode=UI_MODE_TYPE_NORMAL mDockMode=EXTRA_DOCK_STATE_UNDOCKED
+    mEnableCarDockHomeCapture=true mCarDockRotation=-1 mDeskDockRotation=-1
+    mUserRotationMode=USER_ROTATION_FREE mUserRotation=ROTATION_0 mAllowAllRotations=false
+    mCurrentAppOrientation=SCREEN_ORIENTATION_PORTRAIT
+    mCarDockEnablesAccelerometer=true mDeskDockEnablesAccelerometer=true
+    mLidKeyboardAccessibility=0 mLidNavigationAccessibility=0 mLidControlsScreenLock=false
+    mLidControlsSleep=false
+    mLongPressOnBackBehavior=LONG_PRESS_BACK_NOTHING
+    mShortPressOnPowerBehavior=SHORT_PRESS_POWER_GO_TO_SLEEP
+    mLongPressOnPowerBehavior=LONG_PRESS_POWER_GLOBAL_ACTIONS
+    mVeryLongPressOnPowerBehavior=VERY_LONG_PRESS_POWER_NOTHING
+    mDoublePressOnPowerBehavior=MULTI_PRESS_POWER_NOTHING
+    mTriplePressOnPowerBehavior=MULTI_PRESS_POWER_NOTHING
+    mShortPressOnSleepBehavior=SHORT_PRESS_SLEEP_GO_TO_SLEEP
+    mShortPressOnWindowBehavior=SHORT_PRESS_WINDOW_PICTURE_IN_PICTURE
+    mAllowStartActivityForLongPressOnPowerDuringSetup=false
+    mHasSoftInput=true mDismissImeOnBackKeyPressed=false
+    mIncallPowerBehavior=sleep mIncallBackBehavior=<nothing> mEndcallBehavior=sleep
+    mHomePressed=false
+    mAwake=truemScreenOnEarly=true mScreenOnFully=true
+    mKeyguardDrawComplete=true mWindowManagerDrawComplete=true
+    mDockLayer=268435456 mStatusBarLayer=0
+    mShowingDream=false mDreamingLockscreen=false mDreamingSleepToken=null
+    mStatusBar=Window{beeed08 u0 StatusBar} isStatusBarKeyguard=false
+    mFocusedWindow=Window{82ce96e u0 com.facebook.katana/com.facebook.katana.LoginActivity}
+    mFocusedApp=Token{1d8c0e2 ActivityRecord{f5d35ad u0 com.facebook.katana/.LoginActivity t7696}}
+    mTopFullscreenOpaqueWindowState=Window{82ce96e u0 com.facebook.katana/com.facebook.katana.LoginActivity}
+    mTopFullscreenOpaqueOrDimmingWindowState=Window{82ce96e u0 com.facebook.katana/com.facebook.katana.LoginActivity}
+    mTopIsFullscreen=false mKeyguardOccluded=false
+    mKeyguardOccludedChanged=false mPendingKeyguardOccluded=false
+    mForceStatusBar=false mForceStatusBarFromKeyguard=false
+    mAllowLockscreenWhenOn=false mLockScreenTimeout=2147483647 mLockScreenTimerActive=false
+    mLandscapeRotation=ROTATION_90 mSeascapeRotation=ROTATION_270
+    mPortraitRotation=ROTATION_0 mUpsideDownRotation=ROTATION_180
+    mDemoHdmiRotation=ROTATION_90 mDemoHdmiRotationLock=false
+    mUndockedHdmiRotation=-1
+    mKeyMapping.size=0
+    BarController.StatusBar
+      mState=WINDOW_STATE_SHOWING
+      mTransientBar=TRANSIENT_BAR_NONE
+      mContentFrame=Rect(0, 0 - 1080, 63)
+    PolicyControl.sImmersiveStatusFilter=null
+    PolicyControl.sImmersiveNavigationFilter=null
+    PolicyControl.sImmersivePreconfirmationsFilter=null
+    WakeGestureListener
+      mTriggerRequested=false
+      mSensor=null
+    WindowOrientationListener
+      mEnabled=true
+      mCurrentRotation=ROTATION_0
+      mSensorType=null
+      mSensor={Sensor name="K2HH Accelerometer", vendor="STM", version=1, type=1, maxRange=39.2266, resolution=0.0011971008, power=0.13, minDelay=10000}
+      mRate=2
+      AccelSensorJudge
+        mProposedRotation=3
+        mPredictedRotation=3
+        mLastFilteredX=-8.987087
+        mLastFilteredY=0.10130984
+        mLastFilteredZ=-0.03356779
+        mLastFilteredTimestampNanos=6067192341465 (6.884961ms ago)
+        mTiltHistory={last: 0.0}
+        mFlat=false
+        mSwinging=false
+        mAccelerating=false
+        mOverhead=false
+        mTouched=false
+        mTiltToleranceConfig=[[-25, 70], [-25, 65], [-25, 60], [-25, 65]]
+    KeyguardServiceDelegate
+      showing=false
+      showingAndNotOccluded=true
+      inputRestricted=false
+      occluded=false
+      secure=false
+      dreaming=false
+      systemIsReady=true
+      deviceHasKeyguard=true
+      enabled=true
+      offReason=OFF_BECAUSE_OF_USER
+      currentUser=-10000
+      bootCompleted=true
+      screenState=SCREEN_STATE_ON
+      interactiveState=INTERACTIVE_STATE_AWAKE
+      KeyguardStateMonitor
+        mIsShowing=false
+        mSimSecure=false
+        mInputRestricted=false
+        mTrusted=false
+        mCurrentUserId=0
+    Looper state:
+      Looper (android.ui, tid 19) {68abec8}
+        (Total messages: 0, polling=true, quitting=false)
+
+WINDOW MANAGER ANIMATOR STATE (dumpsys window animator)
+    DisplayContentsAnimator #0:
+      Window #0: WindowStateAnimator{5e45b61 com.android.systemui.ImageWallpaper}
+      Window #1: WindowStateAnimator{418a686 com.android.launcher3/com.android.launcher3.lineage.LineageLauncher}
+      Window #2: WindowStateAnimator{2a770a1 com.tlc.helper/com.tlc.helper.MainActivity}
+      Window #3: WindowStateAnimator{68d3cdd com.facebook.katana/com.facebook.katana.LoginActivity}
+      Window #4: WindowStateAnimator{62a4c9d DockedStackDivider}
+      Window #5: WindowStateAnimator{1c8a512 AssistPreviewPanel}
+      Window #6: WindowStateAnimator{2a5f4e3 StatusBar}
+      Window #7: WindowStateAnimator{2f0ff74 InputMethod}
+
+
+    mBulkUpdateParams=0x8 ORIENTATION_CHANGE_COMPLETE
+
+WINDOW MANAGER SESSIONS (dumpsys window sessions)
+  Session Session{1a757ea 4306:u0a10017}:
+    mNumWindow=1 mCanAddInternalSystemWindow=false mAppOverlaySurfaces=[] mAlertWindowSurfaces=[] mClientDead=false mSurfaceSession=android.view.SurfaceSession@bd89ee0
+    mPackageName=com.android.launcher3
+  Session Session{2da467b 4191:u0a10082}:
+    mNumWindow=1 mCanAddInternalSystemWindow=false mAppOverlaySurfaces=[] mAlertWindowSurfaces=[] mClientDead=false mSurfaceSession=android.view.SurfaceSession@ce41599
+    mPackageName=com.android.adbkeyboard
+  Session Session{6ae5356 3250:1000}:
+    mNumWindow=0 mCanAddInternalSystemWindow=true mAppOverlaySurfaces=[] mAlertWindowSurfaces=[] mClientDead=false mSurfaceSession=android.view.SurfaceSession@908005e
+    mPackageName=com.facebook.katana
+  Session Session{7c379e5 3615:u0a10148}:
+    mNumWindow=1 mCanAddInternalSystemWindow=false mAppOverlaySurfaces=[] mAlertWindowSurfaces=[] mClientDead=false mSurfaceSession=android.view.SurfaceSession@c2c2287
+    mPackageName=com.tlc.helper
+  Session Session{9cc92d9 4374:u0a10141}:
+    mNumWindow=1 mCanAddInternalSystemWindow=false mAppOverlaySurfaces=[] mAlertWindowSurfaces=[] mClientDead=false mSurfaceSession=android.view.SurfaceSession@bcc411
+    mPackageName=com.facebook.katana
+  Session Session{a0eca00 3435:u0a10025}:
+    mNumWindow=4 mCanAddInternalSystemWindow=true mAppOverlaySurfaces=[] mAlertWindowSurfaces=[] mClientDead=false mSurfaceSession=android.view.SurfaceSession@f38fc3f
+    mPackageName=com.android.systemui
+
+WINDOW MANAGER DISPLAY CONTENTS (dumpsys window displays)
+  Display: mDisplayId=0
+    init=1080x1920 420dpi cur=1080x1920 app=1080x1920 rng=1080x1017-1920x1857
+    deferred=false mLayoutNeeded=false mTouchExcludeRegion=SkRegion((0,0,1080,1920))
+
+  mLayoutSeq=1819
+
+  Application tokens in top down Z order:
+    mStackId=25
+    mDeferRemoval=false
+    mBounds=[0,0][1080,1920]
+      taskId=7696
+        mBounds=[0,0][1080,1920]
+        mdr=false
+        appTokens=[AppWindowToken{4db2c73 token=Token{1d8c0e2 ActivityRecord{f5d35ad u0 com.facebook.katana/.LoginActivity t7696}}}]
+        mTempInsetBounds=[0,0][0,0]
+          Activity #0 AppWindowToken{4db2c73 token=Token{1d8c0e2 ActivityRecord{f5d35ad u0 com.facebook.katana/.LoginActivity t7696}}}
+            windows=[Window{82ce96e u0 com.facebook.katana/com.facebook.katana.LoginActivity}]
+            windowType=2 hidden=false hasVisible=true
+            app=true mVoiceInteraction=false
+            task={taskId=7696 appTokens=[AppWindowToken{4db2c73 token=Token{1d8c0e2 ActivityRecord{f5d35ad u0 com.facebook.katana/.LoginActivity t7696}}}] mdr=false}
+             mFillsParent=true mOrientation=1
+            hiddenRequested=false mClientHidden=false reportedDrawn=true reportedVisible=true
+            mNumInterestingWindows=1 mNumDrawnWindows=1 inPendingTransaction=false allDrawn=true lastAllDrawn=true)
+            startingData=null removed=false firstWindowDrawn=true mIsExiting=false
+            controller=AppWindowContainerController{ token=Token{1d8c0e2 ActivityRecord{f5d35ad u0 com.facebook.katana/.LoginActivity t7696}} mContainer=AppWindowToken{4db2c73 token=Token{1d8c0e2 ActivityRecord{f5d35ad u0 com.facebook.katana/.LoginActivity t7696}}} mListener=ActivityRecord{f5d35ad u0 com.facebook.katana/.LoginActivity t7696}}
+    mStackId=24
+    mDeferRemoval=false
+    mBounds=[0,0][1080,1920]
+      taskId=7695
+        mBounds=[0,0][1080,1920]
+        mdr=false
+        appTokens=[AppWindowToken{b866543 token=Token{edd1af2 ActivityRecord{6516dfd u0 com.tlc.helper/.MainActivity t7695}}}]
+        mTempInsetBounds=[0,0][0,0]
+          Activity #0 AppWindowToken{b866543 token=Token{edd1af2 ActivityRecord{6516dfd u0 com.tlc.helper/.MainActivity t7695}}}
+            windows=[Window{68e82c8 u0 com.tlc.helper/com.tlc.helper.MainActivity}]
+            windowType=2 hidden=true hasVisible=true
+            app=true mVoiceInteraction=false
+            task={taskId=7695 appTokens=[AppWindowToken{b866543 token=Token{edd1af2 ActivityRecord{6516dfd u0 com.tlc.helper/.MainActivity t7695}}}] mdr=false}
+             mFillsParent=true mOrientation=-1
+            hiddenRequested=true mClientHidden=true reportedDrawn=false reportedVisible=false
+            mAppStopped=true
+            mNumInterestingWindows=1 mNumDrawnWindows=1 inPendingTransaction=false allDrawn=true lastAllDrawn=true)
+            startingData=null removed=false firstWindowDrawn=true mIsExiting=false
+            controller=AppWindowContainerController{ token=Token{edd1af2 ActivityRecord{6516dfd u0 com.tlc.helper/.MainActivity t7695}} mContainer=AppWindowToken{b866543 token=Token{edd1af2 ActivityRecord{6516dfd u0 com.tlc.helper/.MainActivity t7695}}} mListener=ActivityRecord{6516dfd u0 com.tlc.helper/.MainActivity t7695}}
+    mStackId=0
+    mDeferRemoval=false
+    mBounds=[0,0][1080,1920]
+      taskId=7671
+        mBounds=[0,0][1080,1920]
+        mdr=false
+        appTokens=[AppWindowToken{80dcbe9 token=Token{d78fc70 ActivityRecord{9de0eb3 u0 com.android.launcher3/.lineage.LineageLauncher t7671}}}]
+        mTempInsetBounds=[0,0][0,0]
+          Activity #0 AppWindowToken{80dcbe9 token=Token{d78fc70 ActivityRecord{9de0eb3 u0 com.android.launcher3/.lineage.LineageLauncher t7671}}}
+            windows=[Window{278c8af u0 com.android.launcher3/com.android.launcher3.lineage.LineageLauncher}]
+            windowType=2 hidden=true hasVisible=true
+            app=true mVoiceInteraction=false
+            task={taskId=7671 appTokens=[AppWindowToken{80dcbe9 token=Token{d78fc70 ActivityRecord{9de0eb3 u0 com.android.launcher3/.lineage.LineageLauncher t7671}}}] mdr=false}
+             mFillsParent=true mOrientation=5
+            hiddenRequested=true mClientHidden=true reportedDrawn=false reportedVisible=false
+            mAppStopped=true
+            mNumInterestingWindows=1 mNumDrawnWindows=1 inPendingTransaction=false allDrawn=true lastAllDrawn=true)
+            startingData=null removed=false firstWindowDrawn=true mIsExiting=false
+            controller=AppWindowContainerController{ token=Token{d78fc70 ActivityRecord{9de0eb3 u0 com.android.launcher3/.lineage.LineageLauncher t7671}} mContainer=AppWindowToken{80dcbe9 token=Token{d78fc70 ActivityRecord{9de0eb3 u0 com.android.launcher3/.lineage.LineageLauncher t7671}}} mListener=ActivityRecord{9de0eb3 u0 com.android.launcher3/.lineage.LineageLauncher t7671}}
+
+
+  homeStack=Stack=0
+
+  DockedStackDividerController
+    mLastVisibility=false
+    mMinimizedDock=false
+    mAdjustedForIme=false
+    mAdjustedForDivider=false
+
+  PinnedStackController
+    defaultBounds=[533,1594][1038,1878]
+    movementBounds=[42,105][1038,1878]
+    mIsImeShowing=false
+    mImeHeight=0
+    mIsShelfShowing=false
+    mShelfHeight=236
+    mReentrySnapFraction=-1.0
+    mIsMinimized=false
+    mActions=[]
+   mDisplayInfo=DisplayInfo{"Built-in Screen", uniqueId "local:0", app 1080 x 1920, real 1080 x 1920, largest app 1920 x 1857, smallest app 1080 x 1017, mode 1, defaultMode 1, modes [{id=1, width=1080, height=1920, fps=60.000004}], colorMode -22, supportedColorModes [-22], hdrCapabilities android.view.Display$HdrCapabilities@40f16308, rotation 0, density 420 (403.411 x 403.041) dpi, layerStack 0, appVsyncOff 1000000, presDeadline 16666666, type BUILT_IN, state ON, FLAG_SECURE, FLAG_SUPPORTS_PROTECTED_BUFFERS, removeMode 0}
+
+  DisplayFrames w=1080 h=1920 r=0
+    mStable=[0,63][1080,1920]
+    mStableFullscreen=[0,0][1080,1920]
+    mDock=[0,63][1080,1920]
+    mCurrent=[0,63][1080,1920]
+    mSystem=[0,0][1080,1920]
+    mContent=[0,63][1080,1920]
+    mVoiceContent=[0,63][1080,1920]
+    mOverscan=[0,0][1080,1920]
+    mRestrictedOverscan=[0,0][1080,1920]
+    mRestricted=[0,0][1080,1920]
+    mUnrestricted=[0,0][1080,1920]
+    mDisplayInfoOverscan=[0,0][0,0]
+    mRotatedDisplayInfoOverscan=[0,0][0,0]
+    mDisplayCutout=com.android.server.wm.utils.WmDisplayCutout@3c1
+
+WINDOW MANAGER TOKENS (dumpsys window tokens)
+  All tokens:
+  Display #0
+  WallpaperWindowToken{324b61a token=android.os.Binder@1e75cc5}
+  WindowToken{1982ab android.os.BinderProxy@90e2cfa}
+  AppWindowToken{80dcbe9 token=Token{d78fc70 ActivityRecord{9de0eb3 u0 com.android.launcher3/.lineage.LineageLauncher t7671}}}
+  WindowToken{8edfc06 android.os.BinderProxy@d0b96e1}
+  WindowToken{166beba android.os.Binder@b7fa3e5}
+  AppWindowToken{4db2c73 token=Token{1d8c0e2 ActivityRecord{f5d35ad u0 com.facebook.katana/.LoginActivity t7696}}}
+  WindowToken{5532fb3 android.os.BinderProxy@56dc922}
+  AppWindowToken{b866543 token=Token{edd1af2 ActivityRecord{6516dfd u0 com.tlc.helper/.MainActivity t7695}}}
+
+WINDOW MANAGER WINDOWS (dumpsys window windows)
+  Window #0 Window{12950d6 u0 InputMethod}:
+    mDisplayId=0 stackId=0 mSession=Session{2da467b 4191:u0a10082} mClient=android.os.BinderProxy@d9efcf1
+    mOwnerUid=10082 mShowToOwnerOnly=true package=com.android.adbkeyboard appop=NONE
+    mAttrs={(0,0)(fillxwrap) gr=BOTTOM CENTER_VERTICAL sim={adjust=pan} ty=INPUT_METHOD fmt=TRANSPARENT wanim=0x1030056
+      fl=NOT_FOCUSABLE LAYOUT_IN_SCREEN SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS}
+    Requested w=1080 h=51 mLayoutSeq=1381
+    mIsImWindow=true mIsWallpaper=false mIsFloatingLayer=true mWallpaperVisible=false
+    mHasSurface=false isReadyForDisplay()=false mWindowRemovalAllowed=false
+    WindowStateAnimator{2f0ff74 InputMethod}:
+    isOnScreen=false
+    isVisible=false
+  Window #1 Window{beeed08 u0 StatusBar}:
+    mDisplayId=0 stackId=0 mSession=Session{a0eca00 3435:u0a10025} mClient=android.os.BinderProxy@f02e325
+    mOwnerUid=10025 mShowToOwnerOnly=false package=com.android.systemui appop=NONE
+    mAttrs={(0,0)(fillx63) gr=TOP CENTER_VERTICAL sim={adjust=resize} layoutInDisplayCutoutMode=always ty=STATUS_BAR fmt=TRANSLUCENT
+      fl=NOT_FOCUSABLE TOUCHABLE_WHEN_WAKING WATCH_OUTSIDE_TOUCH SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS}
+    Requested w=1080 h=63 mLayoutSeq=1819
+    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false
+    WindowStateAnimator{2a5f4e3 StatusBar}:
+      Surface: shown=true layer=0 alpha=1.0 rect=(0.0,0.0) 1080 x 63 transform=(1.0, 0.0, 1.0, 0.0)
+    mLastFreezeDuration=+1h37m14s844ms
+    isOnScreen=true
+    isVisible=true
+  Window #2 Window{2c252c7 u0 AssistPreviewPanel}:
+    mDisplayId=0 stackId=0 mSession=Session{a0eca00 3435:u0a10025} mClient=android.os.BinderProxy@c23b848
+    mOwnerUid=10025 mShowToOwnerOnly=true package=com.android.systemui appop=NONE
+    mAttrs={(0,0)(fillx656) gr=BOTTOM START CENTER sim={state=unchanged adjust=nothing} ty=VOICE_INTERACTION_STARTING fmt=TRANSLUCENT
+      fl=NOT_FOCUSABLE NOT_TOUCHABLE LAYOUT_IN_SCREEN HARDWARE_ACCELERATED
+      vsysui=LAYOUT_STABLE LAYOUT_HIDE_NAVIGATION LAYOUT_FULLSCREEN}
+    Requested w=0 h=0 mLayoutSeq=15
+    mHasSurface=false isReadyForDisplay()=false mWindowRemovalAllowed=false
+    WindowStateAnimator{1c8a512 AssistPreviewPanel}:
+      mShownAlpha=0.0 mAlpha=1.0 mLastAlpha=0.0
+    isOnScreen=false
+    isVisible=false
+  Window #3 Window{4660970 u0 DockedStackDivider}:
+    mDisplayId=0 stackId=0 mSession=Session{a0eca00 3435:u0a10025} mClient=android.os.BinderProxy@dfc36ed
+    mOwnerUid=10025 mShowToOwnerOnly=false package=com.android.systemui appop=NONE
+    mAttrs={(0,0)(fillx126) sim={adjust=pan} layoutInDisplayCutoutMode=always ty=DOCK_DIVIDER fmt=TRANSLUCENT
+      fl=NOT_FOCUSABLE NOT_TOUCH_MODAL WATCH_OUTSIDE_TOUCH SPLIT_TOUCH HARDWARE_ACCELERATED FLAG_SLIPPERY
+      pfl=NO_MOVE_ANIMATION
+      vsysui=LAYOUT_STABLE LAYOUT_HIDE_NAVIGATION LAYOUT_FULLSCREEN}
+    Requested w=1080 h=126 mLayoutSeq=1819
+    mPolicyVisibility=false mPolicyVisibilityAfterAnim=false mAppOpVisibility=true parentHidden=false mPermanentlyHidden=false mHiddenWhileSuspended=false mForceHideNonSystemOverlayWindow=false
+    mHasSurface=false isReadyForDisplay()=false mWindowRemovalAllowed=false
+    WindowStateAnimator{62a4c9d DockedStackDivider}:
+      mShownAlpha=0.0 mAlpha=1.0 mLastAlpha=0.0
+    isOnScreen=false
+    isVisible=false
+  Window #4 Window{82ce96e u0 com.facebook.katana/com.facebook.katana.LoginActivity}:
+    mDisplayId=0 stackId=25 mSession=Session{9cc92d9 4374:u0a10141} mClient=android.os.BinderProxy@4f5b8e9
+    mOwnerUid=10141 mShowToOwnerOnly=true package=com.facebook.katana appop=NONE
+    mAttrs={(0,0)(fillxfill) sim={state=hidden adjust=resize} ty=BASE_APPLICATION wanim=0x7f1f0009
+      fl=LAYOUT_IN_SCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS
+      pfl=FORCE_DRAW_STATUS_BAR_BACKGROUND
+      vsysui=LIGHT_STATUS_BAR}
+    Requested w=1080 h=1920 mLayoutSeq=1819
+    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false
+    WindowStateAnimator{68d3cdd com.facebook.katana/com.facebook.katana.LoginActivity}:
+      Surface: shown=true layer=0 alpha=1.0 rect=(0.0,0.0) 1080 x 1920 transform=(1.0, 0.0, 1.0, 0.0)
+    isOnScreen=true
+    isVisible=true
+  Window #5 Window{68e82c8 u0 com.tlc.helper/com.tlc.helper.MainActivity}:
+    mDisplayId=0 stackId=24 mSession=Session{7c379e5 3615:u0a10148} mClient=android.os.BinderProxy@746d76b
+    mOwnerUid=10148 mShowToOwnerOnly=true package=com.tlc.helper appop=NONE
+    mAttrs={(0,0)(fillxfill) sim={adjust=pan} ty=BASE_APPLICATION wanim=0x10302f8
+      fl=LAYOUT_IN_SCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS}
+    Requested w=1080 h=1920 mLayoutSeq=1700
+    mHasSurface=false isReadyForDisplay()=false mWindowRemovalAllowed=false
+    WindowStateAnimator{2a770a1 com.tlc.helper/com.tlc.helper.MainActivity}:
+    isOnScreen=false
+    isVisible=false
+  Window #6 Window{278c8af u0 com.android.launcher3/com.android.launcher3.lineage.LineageLauncher}:
+    mDisplayId=0 stackId=0 mSession=Session{1a757ea 4306:u0a10017} mClient=android.os.BinderProxy@ece788e
+    mOwnerUid=10017 mShowToOwnerOnly=true package=com.android.launcher3 appop=NONE
+    mAttrs={(0,0)(fillxfill) sim={adjust=pan forwardNavigation} ty=BASE_APPLICATION fmt=TRANSPARENT wanim=0x10302f8
+      fl=LAYOUT_IN_SCREEN LAYOUT_INSET_DECOR SHOW_WALLPAPER SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS
+      pfl=FORCE_DRAW_STATUS_BAR_BACKGROUND
+      vsysui=LAYOUT_STABLE LAYOUT_HIDE_NAVIGATION LAYOUT_FULLSCREEN}
+    Requested w=1080 h=1920 mLayoutSeq=1680
+    mHasSurface=false isReadyForDisplay()=false mWindowRemovalAllowed=false
+    WindowStateAnimator{418a686 com.android.launcher3/com.android.launcher3.lineage.LineageLauncher}:
+    mWallpaperX=0.0 mWallpaperY=0.5
+    mWallpaperXStep=0.33333334 mWallpaperYStep=1.0
+    isOnScreen=false
+    isVisible=false
+  Window #7 Window{a3bc310 u0 com.android.systemui.ImageWallpaper}:
+    mDisplayId=0 stackId=0 mSession=Session{a0eca00 3435:u0a10025} mClient=android.os.BinderProxy@8ab4bd3
+    mOwnerUid=10025 mShowToOwnerOnly=true package=com.android.systemui appop=NONE
+    mAttrs={(0,0)(1920x1920) gr=TOP START CENTER layoutInDisplayCutoutMode=always ty=WALLPAPER fmt=RGBX_8888 wanim=0x1030308
+      fl=NOT_FOCUSABLE NOT_TOUCHABLE LAYOUT_IN_SCREEN LAYOUT_NO_LIMITS LAYOUT_INSET_DECOR}
+    Requested w=1920 h=1920 mLayoutSeq=1688
+    mIsImWindow=false mIsWallpaper=true mIsFloatingLayer=true mWallpaperVisible=false
+    mHasSurface=true isReadyForDisplay()=false mWindowRemovalAllowed=false
+    WindowStateAnimator{5e45b61 com.android.systemui.ImageWallpaper}:
+      Surface: shown=false layer=0 alpha=1.0 rect=(0.0,0.0) 1920 x 1920 transform=(1.0, 0.0, 1.0, 0.0)
+    mLastFreezeDuration=+1m6s13ms
+    mWallpaperX=0.0 mWallpaperY=0.5
+    mWallpaperXStep=0.33333334 mWallpaperYStep=1.0
+    isOnScreen=true
+    isVisible=false
+
+  mGlobalConfiguration={1.0 452mcc2mnc [en_US] ldltr sw411dp w411dp h707dp 420dpi nrml long port -touch -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 1920) mAppBounds=Rect(0, 0 - 1080, 1920) mWindowingMode=fullscreen mActivityType=undefined} s.8}
+  mHasPermanentDpad=false
+  mCurrentFocus=Window{82ce96e u0 com.facebook.katana/com.facebook.katana.LoginActivity}
+  mFocusedApp=AppWindowToken{4db2c73 token=Token{1d8c0e2 ActivityRecord{f5d35ad u0 com.facebook.katana/.LoginActivity t7696}}}
+  mInTouchMode=true
+  mLastDisplayFreezeDuration=0 due to Window{beeed08 u0 StatusBar}
+  mLastWakeLockHoldingWindow=null mLastWakeLockObscuringWindow=Window{82ce96e u0 com.facebook.katana/com.facebook.katana.LoginActivity}
+  InputConsumers:
+    name=pip_input_consumer pid=3435 user=UserHandle{0}
+  SnapshotCache
+    Entry taskId=7696
+      topApp=AppWindowToken{4db2c73 token=Token{1d8c0e2 ActivityRecord{f5d35ad u0 com.facebook.katana/.LoginActivity t7696}}}
+      snapshot=TaskSnapshot{mSnapshot=android.graphics.GraphicBuffer@4158087 (1080x1920) mOrientation=1 mContentInsets=[0,63][0,0] mReducedResolution=false mScale=1.0 mIsRealSnapshot=true mWindowingMode=1 mSystemUiVisibility=8192 mIsTranslucent=false
+    Entry taskId=7695
+      topApp=AppWindowToken{b866543 token=Token{edd1af2 ActivityRecord{6516dfd u0 com.tlc.helper/.MainActivity t7695}}}
+      snapshot=TaskSnapshot{mSnapshot=android.graphics.GraphicBuffer@b9e6023 (1080x1920) mOrientation=1 mContentInsets=[0,63][0,0] mReducedResolution=false mScale=1.0 mIsRealSnapshot=true mWindowingMode=1 mSystemUiVisibility=0 mIsTranslucent=false

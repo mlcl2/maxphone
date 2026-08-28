@@ -1,0 +1,16 @@
+{
+    "chk_select": true,
+    "uid": true,
+    "script_name": true,
+    "password": true,
+    "fa2": true,
+    "cookie": false,
+    "token": false,
+    "name": true,
+    "gender": true,
+    "friends": true,
+    "groups_count": true,
+    "proxy": true,
+    "status": true,
+    "action_status": true
+}

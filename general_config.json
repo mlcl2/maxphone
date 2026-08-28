@@ -1,0 +1,7 @@
+{
+    "threads": 5,
+    "ip_mode": "airplane",
+    "xproxy_api": "",
+    "fake_device": true,
+    "check_live": true
+}
