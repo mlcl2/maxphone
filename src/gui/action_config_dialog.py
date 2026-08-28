@@ -404,6 +404,45 @@ class ActionConfigDialog(QDialog):
             self.txt_url = QLineEdit(self.config_dict.get("url", "https://vnexpress.net"))
             form.addRow("Đường dẫn Website:", self.txt_url)
 
+        elif action_type in ("update_avatar", "update_cover"):
+            self.txt_image_path = QLineEdit(self.config_dict.get("image_path", ""))
+            btn_browse = QPushButton("📁 Chọn Thư Mục")
+            btn_browse.clicked.connect(self._choose_image_folder)
+            box_img = QHBoxLayout()
+            box_img.addWidget(self.txt_image_path)
+            box_img.addWidget(btn_browse)
+            label_text = "Thư mục ảnh Avatar:" if action_type == "update_avatar" else "Thư mục ảnh Bìa (Cover):"
+            form.addRow(label_text, box_img)
+            self.cb_change_md5 = QCheckBox("Tự động đổi MD5 ảnh chống quét trùng")
+            self.cb_change_md5.setChecked(self.config_dict.get("change_md5", True))
+            form.addRow(self.cb_change_md5)
+
+        elif action_type == "update_bio":
+            self.txt_bio = QTextEdit()
+            self.txt_bio.setPlaceholderText("Nhập nội dung tiểu sử Bio...")
+            self.txt_bio.setText(self.config_dict.get("bio", "Hệ thống nuôi dàn Phone Farm tự động đỉnh cao!"))
+            form.addRow("Nội dung Bio:", self.txt_bio)
+
+        elif action_type == "friends_visibility":
+            self.cmb_vis = QComboBox()
+            self.cmb_vis.addItem("🔒 Chỉ mình tôi (Only me)", "only_me")
+            self.cmb_vis.addItem("👥 Bạn bè (Friends)", "friends")
+            self.cmb_vis.addItem("🌐 Công khai (Public)", "public")
+            idx = self.cmb_vis.findData(self.config_dict.get("visibility", "only_me"))
+            if idx >= 0:
+                self.cmb_vis.setCurrentIndex(idx)
+            form.addRow("Quyền xem danh sách bạn bè:", self.cmb_vis)
+
+        elif action_type == "change_name":
+            self.txt_last_name = QLineEdit(self.config_dict.get("last_name", "Nguyễn"))
+            self.txt_first_name = QLineEdit(self.config_dict.get("first_name", "Văn Nam"))
+            box_name = QHBoxLayout()
+            box_name.addWidget(QLabel("Họ:"))
+            box_name.addWidget(self.txt_last_name)
+            box_name.addWidget(QLabel("Tên:"))
+            box_name.addWidget(self.txt_first_name)
+            form.addRow("Tên hiển thị mới:", box_name)
+
         else:
             self.spin_time_from = QSpinBox(); self.spin_time_from.setRange(5, 600); self.spin_time_from.setValue(self.config_dict.get("time_from", 15))
             form.addRow("Thời gian thực hiện (giây):", self.spin_time_from)
@@ -600,5 +639,19 @@ class ActionConfigDialog(QDialog):
             return {"keyword": self.txt_keyword.text().strip()}
         elif self.action_type == "access_website":
             return {"url": self.txt_url.text().strip()}
+        elif self.action_type in ("update_avatar", "update_cover"):
+            return {
+                "image_path": self.txt_image_path.text().strip(),
+                "change_md5": self.cb_change_md5.isChecked()
+            }
+        elif self.action_type == "update_bio":
+            return {"bio": self.txt_bio.toPlainText().strip()}
+        elif self.action_type == "friends_visibility":
+            return {"visibility": self.cmb_vis.currentData()}
+        elif self.action_type == "change_name":
+            return {
+                "last_name": self.txt_last_name.text().strip(),
+                "first_name": self.txt_first_name.text().strip()
+            }
         else:
             return {"time_from": getattr(self, 'spin_time_from', QSpinBox()).value()}

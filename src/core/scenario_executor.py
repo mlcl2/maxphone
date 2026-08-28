@@ -79,6 +79,11 @@ class ScenarioExecutor:
         "google_search": "execute_google_search", "HDTimKiemGoogle": "execute_google_search",
         "access_website": "execute_access_website", "HDTruyCapWebsite": "execute_access_website",
         "delay": "execute_delay", "HDNghiGiaiLao": "execute_delay",
+        "update_avatar": "execute_update_avatar", "HDUpAvatar": "execute_update_avatar",
+        "update_cover": "execute_update_cover", "HDUpCover": "execute_update_cover",
+        "update_bio": "execute_update_bio", "HDCapNhatThongTin": "execute_update_bio",
+        "friends_visibility": "execute_set_friends_visibility", "HDAnHienBanBe": "execute_set_friends_visibility",
+        "change_name": "execute_change_account_name", "HDDoiTen": "execute_change_account_name",
     }
 
     def execute_action(self, action_type, config):
@@ -2285,6 +2290,239 @@ class ScenarioExecutor:
             self.log(f"✅ [MỜI NHÓM] Đã gửi {invited} lời mời tham gia nhóm.")
             return True
         return False
+
+    def execute_update_avatar(self, config):
+        folder = str(config.get("image_path", config.get("txtPathAnh", ""))).strip()
+        change_md5 = bool(config.get("change_md5", config.get("ckbChangeMd5", True)))
+        images = self._choose_images(folder, 1, 1, change_md5=change_md5)
+        if not images:
+            self.log("❌ Đổi avatar: Không tìm thấy ảnh hợp lệ trong thư mục.")
+            return False
+            
+        self.log(f"🖼️ [AVATAR] Bắt đầu đổi ảnh đại diện (Ảnh: {os.path.basename(images[0])})...")
+        # Đẩy ảnh vào Camera folder để hiện lên đầu picker
+        remote_dir = "/sdcard/DCIM/Camera"
+        self.adb.shell(f'mkdir -p "{remote_dir}"')
+        self.adb.shell(f'rm -f {remote_dir}/fb_avatar_*.jpg')
+        remote_file = f"{remote_dir}/fb_avatar_{int(time.time())}.jpg"
+        self.adb.push(images[0], remote_file)
+        self.adb.shell(
+            f'am broadcast -a android.hardware.action.NEW_PICTURE -d "file://{remote_file}"'
+        )
+        self.adb.shell(
+            f'am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d "file://{remote_file}"'
+        )
+        time.sleep(1)
+
+        # Mở trang cá nhân
+        self.adb.shell('am start -a android.intent.action.VIEW -d "fb://profile" com.facebook.katana')
+        time.sleep(3)
+
+        # Bấm nút Edit profile picture (hoặc tìm button profile picture)
+        edit_btn = self._dump_and_find_bounds(["edit profile picture", "profile picture"], ["android.widget.Button"])
+        if not edit_btn:
+            edit_btn = (372, 826)
+        self.adb.tap(*edit_btn)
+        time.sleep(3)
+
+        # Chọn thumbnail ảnh đầu tiên
+        self.adb.tap(180, 600)
+        time.sleep(3)
+
+        # Bấm nút SAVE
+        save_btn = self._dump_and_find_bounds(["save", "lưu"], ["android.widget.Button"])
+        if not save_btn:
+            save_btn = (974, 121)
+        self.adb.tap(*save_btn)
+        time.sleep(5)
+        self.log("✅ [AVATAR] Đã bấm Lưu ảnh đại diện thành công!")
+        return True
+
+    def execute_update_cover(self, config):
+        folder = str(config.get("image_path", config.get("txtPathAnh", ""))).strip()
+        change_md5 = bool(config.get("change_md5", config.get("ckbChangeMd5", True)))
+        images = self._choose_images(folder, 1, 1, change_md5=change_md5)
+        if not images:
+            self.log("❌ Đổi ảnh bìa: Không tìm thấy ảnh hợp lệ trong thư mục.")
+            return False
+
+        self.log(f"🌄 [COVER] Bắt đầu đổi ảnh bìa (Ảnh: {os.path.basename(images[0])})...")
+        remote_dir = "/sdcard/DCIM/Camera"
+        self.adb.shell(f'mkdir -p "{remote_dir}"')
+        self.adb.shell(f'rm -f {remote_dir}/fb_cover_*.jpg')
+        remote_file = f"{remote_dir}/fb_cover_{int(time.time())}.jpg"
+        self.adb.push(images[0], remote_file)
+        self.adb.shell(
+            f'am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d "file://{remote_file}"'
+        )
+        time.sleep(1)
+
+        # Mở trang cá nhân
+        self.adb.shell('am start -a android.intent.action.VIEW -d "fb://profile" com.facebook.katana')
+        time.sleep(3)
+
+        # Bấm nút Edit cover photo button (hoặc Add cover photo)
+        cover_btn = self._dump_and_find_bounds(["edit cover photo button", "add cover photo", "cover photo"], ["android.widget.Button", "android.view.ViewGroup"])
+        if not cover_btn:
+            cover_btn = (1000, 710)
+        self.adb.tap(*cover_btn)
+        time.sleep(2)
+
+        # Bấm Upload photo
+        upload_btn = self._dump_and_find_bounds(["upload photo", "tải ảnh lên"], ["android.widget.Button"])
+        if not upload_btn:
+            upload_btn = (500, 1675)
+        self.adb.tap(*upload_btn)
+        time.sleep(2)
+
+        # Chọn thumbnail đầu tiên
+        self.adb.tap(180, 360)
+        time.sleep(3)
+
+        # Bấm SAVE
+        save_btn = self._dump_and_find_bounds(["save", "lưu"], ["android.widget.Button"])
+        if not save_btn:
+            save_btn = (974, 121)
+        self.adb.tap(*save_btn)
+        time.sleep(5)
+        self.log("✅ [COVER] Đã bấm Lưu ảnh bìa thành công!")
+        return True
+
+    def execute_update_bio(self, config):
+        bio_text = str(config.get("bio", config.get("txtBio", ""))).strip()
+        if not bio_text:
+            self.log("❌ Đổi tiểu sử: Nội dung Bio trống.")
+            return False
+
+        self.log(f"✍️ [BIO] Bắt đầu cập nhật tiểu sử: '{bio_text}'...")
+        # Mở trang cá nhân
+        self.adb.shell('am start -a android.intent.action.VIEW -d "fb://profile" com.facebook.katana')
+        time.sleep(3)
+
+        # Bấm Edit profile
+        edit_prof = self._dump_and_find_bounds(["edit profile", "chỉnh sửa trang cá nhân"], ["android.widget.Button", "android.view.View"])
+        if not edit_prof:
+            edit_prof = (686, 1292)
+        self.adb.tap(*edit_prof)
+        time.sleep(3)
+
+        # Cuộn xuống mục Bio
+        w, h = self._screen_size()
+        self.adb.swipe(w // 2, int(h * 0.7), w // 2, int(h * 0.3), 350)
+        time.sleep(2)
+
+        # Bấm nút Edit bên cạnh Bio (hoặc Add Bio)
+        self.adb.tap(1010, 1290)
+        time.sleep(2)
+
+        # Bấm Edit bio trong bottom sheet
+        edit_bio_sheet = self._dump_and_find_bounds(["edit bio", "add bio", "chỉnh sửa tiểu sử"], ["android.widget.Button"])
+        if not edit_bio_sheet:
+            edit_bio_sheet = (500, 1675)
+        self.adb.tap(*edit_bio_sheet)
+        time.sleep(2)
+
+        # Focus ô nhập và xóa text cũ
+        self.adb.tap(500, 700)
+        time.sleep(1)
+        for _ in range(70):
+            self.adb.shell("input keyevent 67")
+        time.sleep(1)
+
+        # Nhập Bio mới qua UTF-8
+        self.adb.input_text_utf8(bio_text)
+        time.sleep(2)
+
+        # Bấm Save
+        save_btn = self._dump_and_find_bounds(["save", "lưu"], ["android.widget.Button"])
+        if not save_btn:
+            save_btn = (998, 121)
+        self.adb.tap(*save_btn)
+        time.sleep(4)
+        self.log("✅ [BIO] Đã cập nhật và lưu tiểu sử thành công!")
+        return True
+
+    def execute_set_friends_visibility(self, config):
+        mode = str(config.get("visibility", "only_me")).lower() # public, friends, only_me
+        mode_label = "Only me (Chỉ mình tôi)" if mode == "only_me" else "Public (Công khai)"
+        self.log(f"🔒 [FRIENDS VISIBILITY] Bắt đầu cài đặt hiển thị danh sách bạn bè sang: {mode_label}...")
+
+        # Mở mục Cài đặt quyền riêng tư
+        self.adb.shell('am start -a android.intent.action.VIEW -d "fb://settings" com.facebook.katana')
+        time.sleep(3)
+
+        # Cuộn xuống Audience and visibility -> How people find and contact you
+        w, h = self._screen_size()
+        self.adb.swipe(w // 2, int(h * 0.8), w // 2, int(h * 0.2), 400)
+        time.sleep(2)
+
+        # Bấm How people find and contact you
+        contact_btn = self._dump_and_find_bounds(["how people find and contact you"], ["android.widget.Button", "android.view.View"])
+        if not contact_btn:
+            contact_btn = (500, 1780)
+        self.adb.tap(*contact_btn)
+        time.sleep(3)
+
+        # Bấm Who can see your friends list?
+        friends_list_btn = self._dump_and_find_bounds(["who can see your friends list?"], ["android.widget.Button", "android.view.View"])
+        if not friends_list_btn:
+            friends_list_btn = (500, 646)
+        self.adb.tap(*friends_list_btn)
+        time.sleep(3)
+
+        # Chọn option tương ứng
+        if mode == "only_me":
+            opt = self._dump_and_find_bounds(["only me", "chỉ mình tôi"], ["android.widget.RadioButton", "android.view.ViewGroup"])
+            if not opt:
+                opt = (500, 1040)
+            self.adb.tap(*opt)
+        elif mode == "friends":
+            opt = self._dump_and_find_bounds(["friends", "bạn bè"], ["android.widget.RadioButton", "android.view.ViewGroup"])
+            if not opt:
+                opt = (500, 750)
+            self.adb.tap(*opt)
+        else: # Public
+            opt = self._dump_and_find_bounds(["public", "công khai"], ["android.widget.RadioButton", "android.view.ViewGroup"])
+            if not opt:
+                opt = (500, 600)
+            self.adb.tap(*opt)
+        time.sleep(2)
+
+        # Bấm Save nếu có
+        save_btn = self._dump_and_find_bounds(["save", "lưu"], ["android.widget.Button", "android.view.View"])
+        if save_btn:
+            self.adb.tap(*save_btn)
+            time.sleep(2)
+        self.log(f"✅ [FRIENDS VISIBILITY] Đã cài đặt quyền riêng tư danh sách bạn bè sang {mode_label} thành công!")
+        return True
+
+    def execute_change_account_name(self, config):
+        first_name = str(config.get("first_name", "")).strip()
+        last_name = str(config.get("last_name", "")).strip()
+        if not first_name and not last_name:
+            self.log("❌ Đổi tên Facebook: Cần nhập Tên hoặc Họ mới.")
+            return False
+
+        self.log(f"🪪 [CHANGE NAME] Bắt đầu đổi tên tài khoản thành: '{last_name} {first_name}'...")
+        self.adb.shell('am start -a android.intent.action.VIEW -d "fb://settings" com.facebook.katana')
+        time.sleep(3)
+
+        # Bấm Personal and account information
+        personal_btn = self._dump_and_find_bounds(["personal and account information", "thông tin cá nhân"], ["android.widget.Button", "android.view.View"])
+        if not personal_btn:
+            personal_btn = (500, 580)
+        self.adb.tap(*personal_btn)
+        time.sleep(3)
+
+        # Bấm Name
+        name_btn = self._dump_and_find_bounds(["name", "tên"], ["android.widget.Button", "android.widget.TextView"])
+        if not name_btn:
+            name_btn = (500, 420)
+        self.adb.tap(*name_btn)
+        time.sleep(4)
+
+        self.log(f"✅ [CHANGE NAME] Đã mở giao diện đổi tên Meta Accounts Center cho '{last_name} {first_name}'!")
+        return True
 
     def execute_google_search(self, config):
         """Action: Mở Chrome tìm kiếm Google để tạo lịch sử duyệt web tự nhiên (HDTimKiemGoogle)"""

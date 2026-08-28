@@ -226,6 +226,12 @@ class ScenarioManagerDialog(QDialog):
         act_web = menu.addAction("🔗 23. Truy cập Website trực tiếp")
         act_delay = menu.addAction("☕ 24. Nghỉ giải lao ngẫu nhiên")
 
+        act_update_avatar = menu.addAction("🖼️ 25. Đổi ảnh đại diện (Avatar)")
+        act_update_cover = menu.addAction("🌄 26. Đổi ảnh bìa (Cover Photo)")
+        act_update_bio = menu.addAction("✍️ 27. Đổi tiểu sử (Bio cá nhân)")
+        act_friends_vis = menu.addAction("🔒 28. Ẩn / Hiện danh sách bạn bè")
+        act_change_name = menu.addAction("🪪 29. Đổi tên Facebook")
+
         action = menu.exec(self.btn_add_action.mapToGlobal(self.btn_add_action.rect().bottomLeft()))
         
         if action == act_newsfeed:
@@ -276,6 +282,16 @@ class ScenarioManagerDialog(QDialog):
             self.create_action("access_website", "Truy Cập Website")
         elif action == act_delay:
             self.create_action("delay", "Nghỉ Giải Lao")
+        elif action == act_update_avatar:
+            self.create_action("update_avatar", "Đổi Ảnh Đại Diện (Avatar)")
+        elif action == act_update_cover:
+            self.create_action("update_cover", "Đổi Ảnh Bìa (Cover Photo)")
+        elif action == act_update_bio:
+            self.create_action("update_bio", "Đổi Tiểu Sử (Bio)")
+        elif action == act_friends_vis:
+            self.create_action("friends_visibility", "Ẩn/Hiện Danh Sách Bạn Bè")
+        elif action == act_change_name:
+            self.create_action("change_name", "Đổi Tên Facebook")
 
     def create_action(self, action_type, action_name):
         dialog = ActionConfigDialog(self, action_type, action_name)
