@@ -31,8 +31,11 @@ class ScenarioManagerDialog(QDialog):
         left_box.addWidget(self.list_scenarios)
 
         scen_btn_box = QHBoxLayout()
-        self.btn_add_scen = QPushButton("➕ Thêm Kịch Bản")
+        self.btn_add_scen = QPushButton("➕ Thêm")
         self.btn_add_scen.clicked.connect(self.add_scenario)
+
+        self.btn_dup_scen = QPushButton("📋 Nhân Bản")
+        self.btn_dup_scen.clicked.connect(self.duplicate_scenario)
 
         self.btn_edit_scen = QPushButton("✏️ Đổi Tên")
         self.btn_edit_scen.clicked.connect(self.rename_scenario)
@@ -41,6 +44,7 @@ class ScenarioManagerDialog(QDialog):
         self.btn_del_scen.clicked.connect(self.delete_scenario)
 
         scen_btn_box.addWidget(self.btn_add_scen)
+        scen_btn_box.addWidget(self.btn_dup_scen)
         scen_btn_box.addWidget(self.btn_edit_scen)
         scen_btn_box.addWidget(self.btn_del_scen)
         left_box.addLayout(scen_btn_box)
@@ -63,18 +67,26 @@ class ScenarioManagerDialog(QDialog):
         right_box.addWidget(self.table_actions)
 
         act_btn_box = QHBoxLayout()
-        self.btn_add_action = QPushButton("➕ Thêm Hành Động Mới")
+        self.btn_add_action = QPushButton("➕ Thêm Hành Động")
         self.btn_add_action.setStyleSheet("background-color: #2e7d32; color: white; font-weight: bold; padding: 6px;")
         self.btn_add_action.clicked.connect(self.show_add_action_menu)
 
-        self.btn_edit_action = QPushButton("⚙️ Sửa Cấu Hình Hành Động")
+        self.btn_edit_action = QPushButton("⚙️ Sửa Cấu Hình")
         self.btn_edit_action.clicked.connect(self.edit_action_config)
 
-        self.btn_del_action = QPushButton("❌ Xóa Hành Động")
+        self.btn_move_up = QPushButton("⬆️ Lên")
+        self.btn_move_up.clicked.connect(lambda: self.move_action("up"))
+
+        self.btn_move_down = QPushButton("⬇️ Xuống")
+        self.btn_move_down.clicked.connect(lambda: self.move_action("down"))
+
+        self.btn_del_action = QPushButton("❌ Xóa")
         self.btn_del_action.clicked.connect(self.delete_action)
 
         act_btn_box.addWidget(self.btn_add_action)
         act_btn_box.addWidget(self.btn_edit_action)
+        act_btn_box.addWidget(self.btn_move_up)
+        act_btn_box.addWidget(self.btn_move_down)
         act_btn_box.addWidget(self.btn_del_action)
         right_box.addLayout(act_btn_box)
 
@@ -102,6 +114,33 @@ class ScenarioManagerDialog(QDialog):
                 self.load_scenarios()
             else:
                 QMessageBox.warning(self, "Lỗi", "Kịch bản này đã tồn tại!")
+
+    def duplicate_scenario(self):
+        item = self.list_scenarios.currentItem()
+        if not item:
+            return
+        sc_id = item.data(Qt.ItemDataRole.UserRole)
+        old_name = item.text().replace("📜 ", "")
+        new_name, ok = QInputDialog.getText(self, "Nhân Bản Kịch Bản", "Nhập tên cho bản sao kịch bản:", text=f"{old_name} (Copy)")
+        if ok and new_name.strip():
+            new_id = self.db.duplicate_scenario(sc_id, new_name.strip())
+            if new_id:
+                self.load_scenarios()
+            else:
+                QMessageBox.warning(self, "Lỗi", "Không thể nhân bản kịch bản!")
+
+    def move_action(self, direction="up"):
+        row = self.table_actions.currentRow()
+        if row < 0:
+            return
+        act_id_item = self.table_actions.item(row, 0)
+        if not act_id_item:
+            return
+        act_id = int(act_id_item.text())
+        if self.db.move_action_order(act_id, direction):
+            self.load_actions()
+            new_row = max(0, row - 1) if direction == "up" else min(self.table_actions.rowCount() - 1, row + 1)
+            self.table_actions.setCurrentCell(new_row, 1)
 
     def rename_scenario(self):
         item = self.list_scenarios.currentItem()

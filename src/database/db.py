@@ -173,6 +173,44 @@ class DatabaseManager:
             cursor.execute("DELETE FROM scenarios WHERE id=?", (scenario_id,))
             conn.commit()
 
+    def duplicate_scenario(self, scenario_id, new_name):
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            try:
+                cursor.execute("INSERT INTO scenarios (name) VALUES (?)", (new_name,))
+                new_sc_id = cursor.lastrowid
+                actions = self.get_actions_by_scenario(scenario_id)
+                for act in actions:
+                    cursor.execute("""
+                        INSERT INTO scenario_actions (scenario_id, action_type, action_name, config_json, order_index)
+                        VALUES (?, ?, ?, ?, ?)
+                    """, (new_sc_id, act[1], act[2], act[3], act[4]))
+                conn.commit()
+                return new_sc_id
+            except Exception:
+                return None
+
+    def move_action_order(self, action_id, direction="up"):
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT id, scenario_id, order_index FROM scenario_actions WHERE id=?", (action_id,))
+            current = cursor.fetchone()
+            if not current:
+                return False
+            curr_id, sc_id, curr_idx = current
+            if direction == "up":
+                cursor.execute("SELECT id, order_index FROM scenario_actions WHERE scenario_id=? AND order_index < ? ORDER BY order_index DESC LIMIT 1", (sc_id, curr_idx))
+            else:
+                cursor.execute("SELECT id, order_index FROM scenario_actions WHERE scenario_id=? AND order_index > ? ORDER BY order_index ASC LIMIT 1", (sc_id, curr_idx))
+            neighbor = cursor.fetchone()
+            if not neighbor:
+                return False
+            neighbor_id, neighbor_idx = neighbor
+            cursor.execute("UPDATE scenario_actions SET order_index=? WHERE id=?", (neighbor_idx, curr_id))
+            cursor.execute("UPDATE scenario_actions SET order_index=? WHERE id=?", (curr_idx, neighbor_id))
+            conn.commit()
+            return True
+
     def get_actions_by_scenario(self, scenario_id):
         with self.get_connection() as conn:
             cursor = conn.cursor()

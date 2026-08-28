@@ -682,15 +682,22 @@ class MainWindow(QMainWindow):
             return
 
         general_config = self._read_general_config()
+        available_serials = [s for s in selected_devices if s in self.devices]
+        if not available_serials:
+            QMessageBox.warning(self, "Lỗi", "Không có thiết bị ADB nào khả dụng trong danh sách đã chọn.")
+            return
+
         queue = []
-        for account in selected_accounts:
+        for index, account in enumerate(selected_accounts):
             scenario_config = self._build_scenario_config(account)
             if scenario_config is None:
                 return
+            # Phân bổ luân phiên vòng tròn (Round-Robin) giữa các điện thoại được chọn
+            assigned_serial = available_serials[index % len(available_serials)]
             queue.append(
                 {
                     "account": account,
-                    "serial": target_serial,
+                    "serial": assigned_serial,
                     "scenario": scenario_config,
                     "ip_mode": general_config.get("ip_mode", "super_proxy"),
                     "network_config": general_config,
