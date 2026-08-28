@@ -13,6 +13,10 @@ database.sqlite
 *.log
 backups/*.tar.gz
 *.tar.gz
+*.rar
+.codegraph/
+anh/
+ảnh điện thoại đăng bài/
 
 # Bỏ qua các ảnh chụp màn hình chẩn đoán và XML tạm
 *.png

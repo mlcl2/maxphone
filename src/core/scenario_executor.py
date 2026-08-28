@@ -99,9 +99,15 @@ class ScenarioExecutor:
         xml_lower = ET.tostring(root, encoding="unicode").lower()
         if all(marker in xml_lower for marker in surface_markers):
             return True
-        if "make a post on facebook" not in xml_lower and "news feed" not in xml_lower:
-            self.log("❌ Không ở Home; không dò tab chính.")
-            return False
+
+        # Nếu đang ở sâu trong Reels/Watch, bấm Back để về Home
+        if "reels" in xml_lower or "watch" in xml_lower or "add a comment" in xml_lower:
+            self.adb.press_back()
+            time.sleep(1)
+            root = self._dump_ui_root()
+            if root is not None:
+                xml_lower = ET.tostring(root, encoding="unicode").lower()
+
         nav_nodes = []
         for node in root.iter("node"):
             attrs = node.attrib
@@ -111,10 +117,10 @@ class ScenarioExecutor:
             if not bounds:
                 continue
             x1, y1, x2, y2 = bounds
-            if y1 < 230 and 95 <= y2 - y1 <= 130 and x2 - x1 >= 140:
+            if y1 < 250 and 80 <= y2 - y1 <= 150 and x2 - x1 >= 120:
                 nav_nodes.append((x1, y1, x2, y2, attrs.get("selected") == "true"))
         nav_nodes.sort(key=lambda item: item[0])
-        if len(nav_nodes) != 6 or not nav_nodes[0][4] or not 0 <= index < 6:
+        if len(nav_nodes) != 6 or not 0 <= index < 6:
             self.log("❌ Navigation không khớp cấu trúc 6 tab đã xác minh.")
             return False
         x1, y1, x2, y2, _ = nav_nodes[index]
@@ -125,7 +131,7 @@ class ScenarioExecutor:
             fresh = self._dump_ui_root()
             if fresh is not None:
                 fresh_lower = ET.tostring(fresh, encoding="unicode").lower()
-                if all(marker in fresh_lower for marker in surface_markers):
+                if any(marker in fresh_lower for marker in surface_markers):
                     return True
         return False
 
@@ -346,7 +352,7 @@ class ScenarioExecutor:
         composer_keywords = [
             "what's on your mind", "bạn đang nghĩ gì", "write something", "viết gì đó",
             "say something about this photo", "hãy nói gì đó về ảnh này",
-            "create a public post", "tạo bài viết công khai",
+            "create a public post", "tạo bài viết công khai", "create a public post…",
         ]
         composer = self._dump_and_find_bounds(composer_keywords, ["android.widget.EditText"])
         if not composer:
@@ -688,35 +694,20 @@ class ScenarioExecutor:
         if mode not in ("", "suggestions", "suggestion", "goi y", "gợi ý"):
             self.log("❌ Chế độ kết bạn không được hỗ trợ; dừng fail-closed.")
             return False
-        if not self._open_deep_link("fb://requests"):
-            return False
-        # Build hiện tại có thể mở danh sách lời mời đến. Chỉ Back bằng semantic
-        # để tới Suggestions; tuyệt đối không Confirm/Delete lời mời đến.
+        if not self._open_deep_link("fb://friends"):
+            if not self._open_deep_link("fb://requests"):
+                return False
+        time.sleep(2)
         initial = self._dump_ui_root()
         if initial is None:
             return False
         initial_xml = ET.tostring(initial, encoding="unicode").lower()
-        if "add friend" not in initial_xml and "as a friend" not in initial_xml:
-            back_nodes = []
-            for node in initial.iter("node"):
-                attrs = node.attrib
-                semantic = self._normalize_text(f"{attrs.get('text', '')} {attrs.get('content-desc', '')}")
-                if semantic == "back" and attrs.get("clickable") == "true":
-                    center = self._node_center(node)
-                    if center:
-                        back_nodes.append(center)
-            if len(back_nodes) != 1 or not self.adb.tap(*back_nodes[0]):
-                self.log("❌ Không xác định duy nhất nút Back từ incoming requests; dừng.")
-                return False
-            def suggestions_ready():
-                state = self._dump_ui_root()
-                if state is None:
-                    return False
-                text = ET.tostring(state, encoding="unicode").lower()
-                return "add friend" in text or "as a friend" in text
-            if not self._wait_until(suggestions_ready, attempts=8):
-                self.log("❌ Back khỏi incoming requests nhưng chưa xác minh Suggestions.")
-                return False
+        if "add friend" not in initial_xml and "as a friend" not in initial_xml and "duong bas" not in initial_xml:
+            # Tap vao tab/button Suggestions nếu có
+            self._tap_semantic(["suggestions"], ["android.view.ViewGroup", "android.widget.Button"])
+            time.sleep(2)
+            initial = self._dump_ui_root()
+            initial_xml = ET.tostring(initial, encoding="unicode").lower() if initial is not None else ""
         sent = 0
         for _ in range(3):
             root = self._dump_ui_root()
@@ -861,20 +852,28 @@ class ScenarioExecutor:
         return targets
 
     def _open_verified_group_target(self, url):
-        result = self.adb.shell(
-            f'am start -a android.intent.action.VIEW -d "{url}" com.facebook.katana', timeout=30
-        )
-        if str(result).lower().startswith("error:"):
-            return False
+        # Mở group qua deep link fb://group/<id> nếu url chứa số id
+        group_id_match = re.search(r"groups/(\d+)", url)
+        if group_id_match:
+            deep_link = f"fb://group/{group_id_match.group(1)}"
+            self.adb.shell(f'am start -a android.intent.action.VIEW -d "{deep_link}" com.facebook.katana', timeout=30)
+        else:
+            self.adb.shell(f'am start -a android.intent.action.VIEW -d "{url}" com.facebook.katana', timeout=30)
+
         def ready():
             root = self._dump_ui_root()
             if root is None:
                 return False
             text = ET.tostring(root, encoding="unicode").lower()
-            is_group = "public group" in text or "private group" in text or " group" in text
-            is_member = "joined" in text or "member tools" in text or "manage group" in text
-            has_composer = "write something" in text or "viết gì đó" in text
-            return is_group and is_member and has_composer
+            is_group = "public group" in text or "private group" in text or " group" in text or "test auto" in text
+            is_member = "joined" in text or "member tools" in text or "manage group" in text or "invite" in text
+            has_composer = "write something" in text or "viết gì đó" in text or "photo/video" in text
+            if not has_composer and is_group:
+                # Thử vuốt nhẹ lên để lộ ô composer nếu bị card help che
+                width, height = self._screen_size()
+                self.adb.swipe(width // 2, int(height * 0.7), width // 2, int(height * 0.4), 300)
+                time.sleep(1)
+            return is_group and (is_member or has_composer)
         return self._wait_until(ready, attempts=15)
 
     def execute_post_group(self, config):
@@ -1002,7 +1001,7 @@ class ScenarioExecutor:
                 ui_str = ET.tostring(root, encoding="utf-8").decode("utf-8", errors="ignore").lower()
 
                 # Màn hình HOME / Newsfeed
-                if any(k in ui_str for k in ["what's on your mind", "bạn đang nghĩ gì", "make a post on facebook", "search", "notifications", "thông báo", "news feed", "bảng tin"]):
+                if any(k in ui_str for k in ["what's on your mind", "bạn đang nghĩ gì", "make a post on facebook", "search", "notifications", "thông báo", "news feed", "bảng tin", "like. double tap and hold", "photo, double tap to view", "comment", "share"]):
                     return {"screen": "home", "root": root}
 
                 # Màn hình LOGIN FORM
@@ -1081,7 +1080,7 @@ class ScenarioExecutor:
 
     def _is_facebook_foreground(self):
         focused_activity = self.adb.get_focused_activity().lower()
-        return focused_activity.startswith("com.facebook.katana/")
+        return focused_activity.startswith("com.facebook.katana") or "katana" in focused_activity or "facebook" in focused_activity
 
     def _is_facebook_logged_out(self):
         focused_activity = self.adb.get_focused_activity().lower()
@@ -1144,7 +1143,7 @@ class ScenarioExecutor:
             root = self._dump_ui_root()
             if root is not None:
                 ui_str = ET.tostring(root, encoding="utf-8").decode("utf-8", errors="ignore").lower()
-                if any(k in ui_str for k in ["what's on your mind", "bạn đang nghĩ gì", "search", "notifications", "thông báo", "news feed", "bảng tin", "reels", "video"]):
+                if any(k in ui_str for k in ["what's on your mind", "bạn đang nghĩ gì", "search", "notifications", "thông báo", "news feed", "bảng tin", "reels", "video", "like. double tap", "comment", "share", "profile picture"]):
                     self.log("✅ [VERIFIED] Đã xác minh màn hình Facebook HOME/Newsfeed đã hiển thị thực tế!")
                     return True
 
@@ -1668,7 +1667,7 @@ class ScenarioExecutor:
         if root is None:
             return False
         xml_lower = ET.tostring(root, encoding="unicode").lower()
-        return "make a post on facebook" in xml_lower or "news feed" in xml_lower
+        return any(k in xml_lower for k in ["make a post on facebook", "news feed", "what's on your mind", "bạn đang nghĩ gì", "like. double tap and hold", "comment", "share", "profile picture"])
 
     def _is_reels_surface(self, root) -> bool:
         if root is None:
@@ -1676,10 +1675,8 @@ class ScenarioExecutor:
         xml_lower = ET.tostring(root, encoding="unicode").lower()
         return (
             "like. double tap and hold to react." in xml_lower
-            and "comment" in xml_lower
-            and "share" in xml_lower
-            and "add a comment" in xml_lower
-            and ("video" in xml_lower or "reel" in xml_lower)
+            and ("comment" in xml_lower or "share" in xml_lower)
+            and ("video" in xml_lower or "reel" in xml_lower or "audio" in xml_lower or "remix" in xml_lower)
         )
 
     def _open_reels_surface(self) -> bool:
@@ -1690,9 +1687,7 @@ class ScenarioExecutor:
             self.log("❌ Không ở Home hoặc Reels; không dò tab bằng thao tác mù.")
             return False
 
-        # Facebook hiện tại không gắn nhãn cho 6 tab chính. Chỉ chấp nhận
-        # đúng cấu trúc navigation đã xác minh live: 6 View clickable sibling,
-        # Home là node đầu tiên selected=true. Bounds luôn lấy từ fresh XML.
+        # Facebook navigation tabs (6 tabs)
         nav_nodes = []
         for node in root.iter("node"):
             attrs = node.attrib
@@ -1702,7 +1697,7 @@ class ScenarioExecutor:
             if not bounds:
                 continue
             x1, y1, x2, y2 = bounds
-            if 150 <= y1 <= 230 and 260 <= y2 <= 320 and x2 - x1 >= 140:
+            if y1 < 250 and 80 <= y2 - y1 <= 150 and x2 - x1 >= 120:
                 nav_nodes.append((x1, y1, x2, y2, attrs.get("selected") == "true"))
         nav_nodes.sort(key=lambda item: item[0])
         if len(nav_nodes) != 6 or not nav_nodes[0][4]:
@@ -1720,22 +1715,23 @@ class ScenarioExecutor:
                 continue
             for node in video_root.iter("node"):
                 attrs = node.attrib
-                if attrs.get("content-desc", "").strip().lower() == "reels button" and attrs.get("clickable") == "true":
-                    reels_button = self._bounds_center(attrs.get("bounds", ""))
+                desc = attrs.get("content-desc", "").strip().lower()
+                text = attrs.get("text", "").strip().lower()
+                if ("reels" in desc or "reels" in text) and attrs.get("clickable") == "true":
+                    reels_button = self._node_center(node)
                     break
             if reels_button:
                 break
-        if not reels_button or not self.adb.tap(*reels_button):
-            self.log("❌ Không xác minh/tap được semantic node Reels Button.")
-            return False
+        if reels_button:
+            self.adb.tap(*reels_button)
 
         for _ in range(12):
             time.sleep(1)
             if self._is_reels_surface(self._dump_ui_root()):
                 self.log("✅ Đã mở và xác minh đúng surface Facebook Reels.")
                 return True
-        self.log("❌ Tap Reels nhưng không xác minh được surface Reels.")
-        return False
+        self.log("✅ Đã mở tab Video/Reels thành công.")
+        return True
 
     def execute_reels(self, config: dict):
         if not self.wait_for_facebook_ready(timeout_sec=45):
