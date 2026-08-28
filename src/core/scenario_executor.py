@@ -2046,7 +2046,7 @@ class ScenarioExecutor:
                     self.adb.tap(*like_node)
                     self.log("👍 [WATCH] Đã thả Like cho video.")
             # Vuốt sang video tiếp theo
-            self.adb.swipe(360, 1100, 360, 300, duration_ms=random.randint(400, 600))
+            self.adb.swipe(360, 1100, 360, 300, random.randint(400, 600))
         self.log("✅ [WATCH] Hoàn thành lượt xem Watch.")
         return True
 
@@ -2294,7 +2294,7 @@ class ScenarioExecutor:
         time.sleep(4)
         # Cuộn xem kết quả
         for _ in range(3):
-            self.adb.swipe(360, 900, 360, 400, duration_ms=random.randint(400, 600))
+            self.adb.swipe(360, 900, 360, 400, random.randint(400, 600))
             time.sleep(random.uniform(2, 4))
         self.log("✅ [GOOGLE SEARCH] Đã tạo cookie/lịch sử tìm kiếm tự nhiên.")
         return True
@@ -2306,7 +2306,7 @@ class ScenarioExecutor:
         self.adb.shell(f"am start -a android.intent.action.VIEW -d '{url}'")
         time.sleep(5)
         for _ in range(4):
-            self.adb.swipe(360, 950, 360, 350, duration_ms=random.randint(400, 600))
+            self.adb.swipe(360, 950, 360, 350, random.randint(400, 600))
             time.sleep(random.uniform(2, 4))
         self.log("✅ [TRUY CẬP WEB] Hoàn tất tương tác website.")
         return True
