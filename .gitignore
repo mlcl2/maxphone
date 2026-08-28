@@ -11,6 +11,8 @@ dist/
 *.egg-info/
 database.sqlite
 *.log
+backups/*.tar.gz
+*.tar.gz
 
 # Bỏ qua các ảnh chụp màn hình chẩn đoán và XML tạm
 *.png
